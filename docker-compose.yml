@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+  nestjs_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nestjs-app
+    entrypoint: sh -c "npm install && npm run init"
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/home/node/app
+    depends_on:
+      - rabbitmq
+      - elasticsearch
+      - redis
+
+  rabbitmq:
+    image: rabbitmq:3.8.17-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  redis:
+    image: redis:6.2-alpine
+    container_name: redis
+    ports:
+      - 6379:6379
+    restart: always
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.2
+    container_name: es01
+    environment:
+      - node.name=es01
+      - cluster.name=docker-cluster
+      - discovery.type=single-node
+    ports:
+      - 9200:9200
+      - 9300:9300
+  # kibana:
+  #   image: docker.elastic.co/kibana/kibana:7.17.2
+  #   container_name: kibana
+  #   environment:
+  #     - ELASTICSEARCH_HOSTS=https://es01:9200
+  #   ports:
+  #     - 5601:5601
+  #   depends_on:
+  #     - elasticsearch

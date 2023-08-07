@@ -1,0 +1,23 @@
+{
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "init": "npm run build && node apps/api/dist/main"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.12"
+  },
+  "dependencies": {
+    "@nestjs/class-validator": "^0.13.4",
+    "@nestjs/cli": "^10.1.11",
+    "@nestjs/event-emitter": "^2.0.0",
+    "axios": "^1.4.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "create-vite": "^4.4.1",
+    "vite": "^4.4.8"
+  }
+}
